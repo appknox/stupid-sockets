@@ -6,11 +6,11 @@
  */
 
 var parseArgs = require('minimist')
-  , port = 8008
+  , port = argv.port || 8008
   , io = require('socket.io')(port)
   , redis = require('redis')
   , argv = parseArgs(process.argv)
-  , redisPort = argv.port || 6379
+  , redisPort = 6379
   , redisHost = argv.host || 'localhost'
   , client = redis.createClient(parseInt(redisPort), redisHost);
 

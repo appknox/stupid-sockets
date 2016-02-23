@@ -1,1 +1,1 @@
-socket: node index.js
+socket: node index.js --host=redis --port=$PORT
