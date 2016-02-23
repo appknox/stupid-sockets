@@ -5,13 +5,11 @@
  * Distributed under terms of the MIT license.
  */
 
-var parseArgs = require('minimist')
-  , port = argv.port || 8008
+var port = process.env.PORT || 8008
   , io = require('socket.io')(port)
   , redis = require('redis')
-  , argv = parseArgs(process.argv)
   , redisPort = 6379
-  , redisHost = argv.host || 'localhost'
+  , redisHost = 'redis'
   , client = redis.createClient(parseInt(redisPort), redisHost);
 
 console.log('server listens on port ' + port);

@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js --host=redis --port=$PORT"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
