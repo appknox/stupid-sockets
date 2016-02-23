@@ -1,0 +1,29 @@
+{
+  "name": "stupid-sockets",
+  "version": "1.0.0",
+  "description": "A stupidly simple socket server",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:appknox/stupid-sockets.git"
+  },
+  "keywords": [
+    "sockets"
+  ],
+  "author": "dhilipsiva",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/appknox/stupid-sockets/issues"
+  },
+  "homepage": "https://github.com/appknox/stupid-sockets",
+  "dependencies": {
+    "hiredis": "*",
+    "minimist": "*",
+    "redis": "*",
+    "socket.io": "*"
+  }
+}
