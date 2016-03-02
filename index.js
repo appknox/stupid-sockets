@@ -10,7 +10,7 @@ var port = process.env.PORT || 8008
   , redis = require('redis')
   , redisPort = 6379
   , redisHost = 'backing-services'
-  , client = redis.createClient(parseInt(redisPort), redisHost);
+  , client = redis.createClient(redisPort, redisHost);
 
 console.log('server listens on port ' + port);
 
