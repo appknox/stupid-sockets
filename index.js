@@ -9,7 +9,7 @@ var port = process.env.PORT || 8008
   , io = require('socket.io')(port)
   , redis = require('redis')
   , redisPort = 6379
-  , redisHost = 'backing-services'
+  , redisHost = 'redis.pubsub'
   , client = redis.createClient(redisPort, redisHost);
 
 console.log('server listens on port ' + port);
