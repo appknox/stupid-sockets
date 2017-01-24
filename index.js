@@ -6,15 +6,15 @@
  */
 
 var port = process.env.PORT || 8008
-  , io = require('socket.io')(port)
+  , server = require('http').createServer()
+  , io = require('socket.io')(server)
   , redis = require('redis')
   , redisPort = 6379
   , redisHost = 'redis.pubsub'
   , client = redis.createClient(redisPort, redisHost);
 
-console.log('server listens on port ' + port);
 
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
 
   socket.on('subscribe', function(data) {
     socket.join(data.room);
@@ -39,14 +39,18 @@ client.on("message", function (channel, message) {
 
   data = JSON.parse(message);
   data.rooms.forEach(function(room){
-    io.sockets.in(room).emit(data.event, data.data);
+    io.in(room).emit(data.event, data.data);
   });
 
   console.log("Got a new message: ", data.rooms);
 
 });
 
+
 client.subscribe("notify");
+
+console.log('server listens on port ' + port);
+server.listen(port);
 
 /*
  * Usage on client side
