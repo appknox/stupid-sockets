@@ -8,11 +8,13 @@
 var port = process.env.PORT || 8008
   , server = require('http').createServer()
   , io = require('socket.io')(server)
-  , redis = require('redis')
+  // , redis = require('redis')
+  , redis = require('socket.io-redis')
   , redisPort = 6379
   , redisHost = 'redis.pubsub'
-  , client = redis.createClient(redisPort, redisHost);
+  , adapter = redis({host: redisHost , port: redisPort})
 
+io.adapter(adapter)
 
 io.on('connection', function (socket) {
 
@@ -33,7 +35,7 @@ io.on('connection', function (socket) {
 
 });
 
-client.on("message", function (channel, message) {
+adapter.subClient.on("message", function (channel, message) {
 
   console.log("channel:%s - message:%s",channel, message);
 
@@ -47,7 +49,7 @@ client.on("message", function (channel, message) {
 });
 
 
-client.subscribe("notify");
+adapter.subClient.subscribe("notify");
 
 console.log('server listens on port ' + port);
 server.listen(port);
