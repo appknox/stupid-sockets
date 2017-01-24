@@ -37,7 +37,7 @@ io.on('connection', function (socket) {
 
 adapter.subClient.on("message", function (channel, message) {
 
-  console.log("channel:%s - message:%s",channel, message);
+  console.log("channel:%s - message:%s", channel, message);
 
   data = JSON.parse(message);
   data.rooms.forEach(function(room){
