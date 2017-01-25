@@ -8,7 +8,7 @@
 var port = process.env.PORT || 8008
   , server = require('http').createServer()
   , io = require('socket.io')(server)
-  // , redis = require('redis')
+// , redis = require('redis')
   , redis = require('socket.io-redis')
   , redisPort = 6379
   , redisHost = 'redis.pubsub'
@@ -37,14 +37,15 @@ io.on('connection', function (socket) {
 
 adapter.subClient.on("message", function (channel, message) {
 
-  console.log("channel:%s - message:%s", channel, message);
+  console.log("New Message in Channel: %s", channel);
+  if (channel == "notify") {
+    data = JSON.parse(message);
+    data.rooms.forEach(function(room){
+      io.in(room).emit(data.event, data.data);
+    });
 
-  data = JSON.parse(message);
-  data.rooms.forEach(function(room){
-    io.in(room).emit(data.event, data.data);
-  });
-
-  console.log("Got a new message: ", data.rooms);
+    console.log("new message: ", message);
+  }
 
 });
 
