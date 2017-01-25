@@ -9,14 +9,15 @@ var port = process.env.PORT || 8008
   , server = require('http').createServer()
   , io = require('socket.io')(server)
 // , redis = require('redis')
-  , adapter = require('socket.io-redis')
+  , socketIORedis = require('socket.io-redis')
   , redisPort = 6379
   , redisHost = 'redis.pubsub'
   , redis = require('redis').createClient
   , pub = redis(redisPort, redisHost, { auth_pass: process.env.REDIS_PASSWORD })
-  , sub = redis(redisPort, redisHost, { auth_pass: process.env.REDIS_PASSWORD });
+  , sub = redis(redisPort, redisHost, { auth_pass: process.env.REDIS_PASSWORD })
+  , adapter = socketIORedis({ pubClient: pub, subClient: sub })
 
-io.adapter(adapter({ pubClient: pub, subClient: sub }));
+io.adapter(adapter);
 
 io.on('connection', function (socket) {
 
