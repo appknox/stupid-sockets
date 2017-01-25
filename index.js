@@ -58,6 +58,6 @@ server.listen(port);
 /*
  * Usage on client side
  *
- * socket.send("subscribe", { room: "user uuid" });
+ * socket.emit("subscribe", { room: "user uuid" });
  *
  */
