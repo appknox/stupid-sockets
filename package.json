@@ -8,6 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
+  "engines" : {
+	  "node" : "~6.5.0",
+	  "npm": "3.10.3"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:appknox/stupid-sockets.git"
