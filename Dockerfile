@@ -1,9 +1,11 @@
-FROM node:9.3.0-stretch
+FROM node:9.4.0-alpine
 
 WORKDIR /code
 
 COPY package*.json /code/
-RUN npm install
+RUN apk --update add --virtual build-dependencies build-base python \
+    && npm install \
+    && apk del build-dependencies
 
 COPY . /code/
 
