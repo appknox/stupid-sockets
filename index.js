@@ -1,29 +1,46 @@
 /*
  * app.js
- * Copyright (C) 2020 Appknox <engineering@appknox.com>
+ * Copyright (C) 2021 Appknox <engineering@appknox.com>
  *
  * Distributed under terms of the MIT license.
  */
 
+const http = require('http');
+const pino = require('pino');
+const socketio = require('socket.io');
+const redisAdapter = require('socket.io-redis');
+const redis = require('redis');
+
 const port = process.env.PORT || 8008;
-const server = require('http').createServer();
-const io = require('socket.io')(server, {
-  path: '/websocket',
-  serveClient: false
-});
-const socketIORedis = require('socket.io-redis');
 const redisPort = process.env.REDIS_PORT || 6379;
 const redisHost = process.env.REDIS_HOST || 'localhost';
 const redisPassword = process.env.REDIS_PASSWORD;
-const redis = require('redis').createClient;
-const pub = redis(redisPort, redisHost, { auth_pass: redisPassword });
-const sub = redis(redisPort, redisHost, { auth_pass: redisPassword });
-const adapter = socketIORedis({ pubClient: pub, subClient: sub });
-const pino = require('pino');
+
 const log = pino({
-    prettyPrint: true,
-    level: process.env.LOGLEVEL || 'info'
+  prettyPrint: true,
+  level: process.env.LOGLEVEL || 'info'
 });
+
+
+const server = http.createServer();
+const io = socketio(server, {
+  path: '/websocket',
+  allowEIO3: true,
+  serveClient: false,
+  cors: {
+    origin: true,
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
+
+const pubClient = redis.createClient(redisPort, redisHost, { auth_pass: redisPassword });
+const subClient = pubClient.duplicate();
+
+const adapter = redisAdapter({
+  pubClient: pubClient,
+  subClient: subClient
+})
 
 io.adapter(adapter);
 
@@ -49,9 +66,10 @@ io.on('connection', function (socket) {
 
 });
 
-adapter.subClient.on("message", function (channel, message) {
+subClient.on("message", function(channel, message) {
   log.debug(`New Message in Channel: ${channel}`);
   log.debug(`Message: ${message}`);
+  let data = "";
   if (channel == "notify") {
     try {
       data = JSON.parse(message);
@@ -59,20 +77,16 @@ adapter.subClient.on("message", function (channel, message) {
       log.error(error, channel, message);
       return;
     }
+
     if(data && data.rooms && data.rooms.length) {
-      data.rooms.forEach(function(room){
-        io.in(room).emit(data.event, data.data);
-      });
+      io.to(data.rooms).emit(data.event, data.data);
     } else {
       log.error(`Invalid message: ${message} from channel: ${channel}`);
     }
-  } else {
-    log.error(`Invalid channel: ${channel} with message: ${message}`);
   }
 });
 
-
-adapter.subClient.subscribe("notify");
+subClient.subscribe("notify");
 
 log.info('server listens on port ' + port);
 server.listen(port);

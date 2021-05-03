@@ -1,6 +1,6 @@
 {
   "name": "stupid-sockets",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A stupidly simple socket server",
   "main": "index.js",
   "private": true,
@@ -11,8 +11,8 @@
     "serve": "cross-env LOGLEVEL=debug node index.js"
   },
   "engines": {
-    "node": ">=13.6.0",
-    "npm": ">=6.13.4"
+    "node": ">=14",
+    "npm": ">=6"
   },
   "repository": {
     "type": "git",
@@ -28,12 +28,12 @@
   },
   "homepage": "https://github.com/appknox/stupid-sockets",
   "dependencies": {
-    "cross-env": "^7.0.0",
-    "pino": "^5.16.0",
-    "pino-pretty": "^3.5.0",
-    "redis": "2.8.0",
-    "socket.io": "2.3.0",
-    "socket.io-redis": "5.2.0"
+    "cross-env": "^7.0.3",
+    "pino": "^6.11.3",
+    "pino-pretty": "^4.7.1",
+    "redis": "^3.1.2",
+    "socket.io": "^4.0.1",
+    "socket.io-redis": "^6.1.0"
   },
   "devDependencies": {}
 }
