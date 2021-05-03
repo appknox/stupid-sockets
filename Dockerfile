@@ -3,7 +3,7 @@ FROM node:16-alpine
 WORKDIR /code
 
 COPY package*.json /code/
-RUN apk --update add --virtual build-dependencies build-base python \
+RUN apk --update add --virtual build-dependencies \
     && npm install \
     && apk del build-dependencies
 
