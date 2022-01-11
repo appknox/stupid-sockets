@@ -1,6 +1,6 @@
 {
   "name": "stupid-sockets",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A stupidly simple socket server",
   "main": "index.js",
   "private": true,
@@ -11,8 +11,8 @@
     "serve": "cross-env LOGLEVEL=debug node index.js"
   },
   "engines": {
-    "node": ">=14",
-    "npm": ">=6"
+    "node": ">=16",
+    "npm": ">=7"
   },
   "repository": {
     "type": "git",
@@ -35,5 +35,8 @@
     "socket.io": "^4.0.1",
     "socket.io-redis": "^6.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "volta": {
+    "node": "16.13.2"
+  }
 }
