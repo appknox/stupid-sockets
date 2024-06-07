@@ -64,6 +64,13 @@ io.on('connection', function (socket) {
     log.debug("User quit the room: ", data);
   })
 
+  socket.on('health_check', function (data) {
+    if (data === "ping") {
+      log.debug("Health check ping success");
+
+      socket.emit("health_check", "pong");
+    }
+  });
 });
 
 subClient.on("message", function(channel, message) {
